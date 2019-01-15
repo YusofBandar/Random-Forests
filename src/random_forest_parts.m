@@ -24,3 +24,12 @@ if(numFeatures > InBagDataColumnSize) numFeatures = InBagDataColumnSize; end
 % Features to be used
 selectedFeatures = randperm(InBagDataColumnSize,numFeatures);
 selectedFeatures = InBagData(:,selectedFeatures)
+
+%=======================================SUMMING VOTES===========================
+votes = readtable('votes.csv')
+
+
+% Finding the highest vote
+[val,ind] = max(sum(votes{:,:}));
+% Extract which classification
+votes.Properties.VariableNames(ind)

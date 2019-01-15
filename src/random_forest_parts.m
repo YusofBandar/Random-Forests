@@ -1,4 +1,4 @@
-data = readtable('iris.csv');
+data = readtable('../data/iris.csv');
 
 % format table for testing (in this example whole table is used for testing)
 test_labels = categorical(data{:,'species'});
@@ -26,7 +26,7 @@ selectedFeatures = randperm(InBagDataColumnSize,numFeatures);
 selectedFeatures = InBagData(:,selectedFeatures)
 
 %=======================================SUMMING VOTES===========================
-votes = readtable('votes.csv')
+votes = readtable('../data/votes.csv')
 
 
 % Finding the highest vote

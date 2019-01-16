@@ -26,16 +26,18 @@ classdef myrandomforest
             % number of training examples (rows)
             m.N = size(train_examples,1);
             
-            m.bag = myrandomforest.bagging(m);
+           
         end
         
-        % Create a singe bag of testing examples. 
+        % Create a singe bag of testing examples.
         % The size of the bag is determined by the in bag fraction.
-        function bag = bagging(m)
+        function [bag_examples,bag_labels] = bagging(m)
             bag_size = size(m.train_examples,1) * m.in_bag_fraction
             
-            bag_index = randi(m.N,1,bag_size);
-            bag = m.train_examples(bag_index, :);
+            bag_indices = randi(m.N,1,bag_size);
+            
+            bag_examples = m.train_examples(bag_indices, :);
+            bag_labels = m.train_labels(bag_indices,:);
         end
         
     end

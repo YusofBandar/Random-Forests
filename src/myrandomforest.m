@@ -8,18 +8,28 @@ classdef myrandomforest
             m.in_bag_fraction = in_bag_fraction;
             % Number of Features to select at random for each decision split.
             m.num_features_to_sample = num_features_to_sample;
+            
             % minimum number of training examples needed for a split
             m.min_parent_size = 10;
+            
             % unique classes
             m.unique_classes = unique(train_labels);
+            
             % feature names
             m.feature_names = train_examples.Properties.VariableNames;
-            % number of nodes 1 as we only have a root node
+            
+            % training examples
+            m.train_examples = train_examples;
+            % training labels
+            m.train_labels = train_labels;
+            
             % number of training examples (rows)
             m.N = size(train_examples,1);
         end
         
-    end
         
+        
+    end
+    
     
 end

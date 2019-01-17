@@ -26,7 +26,14 @@ classdef myrandomforest
             % number of training examples (rows)
             m.N = size(train_examples,1);
             
-           
+            m.trees = {};
+            
+            for i=1:num_trees
+                [bag_examples,bag_labels] = myrandomforest.bagging(m);
+                tree = mytree.fit(bag_examples,bag_labels);
+                m.trees{1,i} = tree;
+            end
+            
         end
         
         % Create a singe bag of testing examples.

@@ -39,7 +39,7 @@ classdef myrandomforest
         % Create a singe bag of testing examples.
         % The size of the bag is determined by the in bag fraction.
         function [bag_examples,bag_labels] = bagging(m)
-            bag_size = size(m.train_examples,1) * m.in_bag_fraction
+            bag_size = 	int32(size(m.train_examples,1) * m.in_bag_fraction)
             
             bag_indices = randi(m.N,1,bag_size);
             

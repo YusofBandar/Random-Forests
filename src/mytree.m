@@ -34,12 +34,14 @@ classdef mytree
             
         end
         
+        % Generates Random list of numbers corresponding to feature
+        % indicies 
         function selectedFeatures = feature_selection(numFeatures,InBagData)
             InBagDataColumnSize = size(InBagData,2);
             
             if(numFeatures > InBagDataColumnSize) numFeatures = InBagDataColumnSize; end
             
-            % Features to be used
+            % Features Indicies to be used
             selectedFeatures = randperm(InBagDataColumnSize,numFeatures);
             
         end
@@ -52,6 +54,7 @@ classdef mytree
             
             node.impurityMeasure = mytree.weightedImpurity(m, node.labels);
             
+            % sub-sample the features for each node split
             selected_examples = mytree.feature_selection(m.num_features_to_sample,node.examples);
             
             for a=1:size(selected_examples,2)

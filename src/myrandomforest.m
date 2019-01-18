@@ -36,6 +36,12 @@ classdef myrandomforest
             end
             
         end
+
+        function prediction = model_prediction(predictions)
+            [unique_predictions, ~,indicies] = unique(predictions);
+            v = mode(indicies);
+            prediction = unique_predictions(v);
+        end
         
         function predictions = predict(m, test_examples)
             

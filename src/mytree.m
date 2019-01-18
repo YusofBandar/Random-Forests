@@ -26,7 +26,7 @@ classdef mytree
             m.min_parent_size = 10;
             m.unique_classes = unique(r.labels);
             m.feature_names = train_examples.Properties.VariableNames;
-       	    m.nodes = 1;
+            m.nodes = 1;
             m.N = size(train_examples,1);
             m.num_features_to_sample = num_features_to_sample;
             m.tree = mytree.trySplit(m, r);
@@ -41,7 +41,7 @@ classdef mytree
             
             % Features to be used
             selectedFeatures = randperm(InBagDataColumnSize,numFeatures);
-            selectedFeatures = InBagData(:,selectedFeatures)
+            
         end
         
         function node = trySplit(m, node)
@@ -52,12 +52,17 @@ classdef mytree
             
             node.impurityMeasure = mytree.weightedImpurity(m, node.labels);
             
-            for i=1:size(node.examples,2)
+            selected_examples = mytree.feature_selection(m.num_features_to_sample,node.examples)
+            
+            for a=1:size(selected_examples,2)
+                i = selected_examples(1,a);
+                fprintf('evaluating possible splits on feature %d/%d\n', i, size(node.examples,2));
                 
-               	fprintf('evaluating possible splits on feature %d/%d\n', i, size(node.examples,2));
+                [ps,n] = sortrows(node.examples,i);
                 
-               	[ps,n] = sortrows(node.examples,i);
                 ls = node.labels(n);
+                
+                
                 biggest_reduction(i) = -Inf;
                 biggest_reduction_index(i) = -1;
                 biggest_reduction_value(i) = NaN;
@@ -73,7 +78,7 @@ classdef mytree
                         biggest_reduction_index(i) = j;
                     end
                 end
-            				
+                
             end
             
             [winning_reduction,winning_feature] = max(biggest_reduction);
@@ -123,10 +128,10 @@ classdef mytree
             obsInThisNode = length(labels);
             for i=1:length(m.unique_classes)
                 
-            				pi = length(labels(labels==m.unique_classes(i))) / obsInThisNode;
+                pi = length(labels(labels==m.unique_classes(i))) / obsInThisNode;
                 summ = summ + (pi*pi);
                 
-         			end
+            end
             g = 1 - summ;
             
             e = weight * g;
@@ -139,24 +144,24 @@ classdef mytree
             
             for i=1:size(test_examples,1)
                 
-            				fprintf('classifying example %i/%i\n', i, size(test_examples,1));
+                fprintf('classifying example %i/%i\n', i, size(test_examples,1));
                 this_test_example = test_examples{i,:};
                 this_prediction = mytree.predict_one(m, this_test_example);
                 predictions(end+1) = this_prediction;
                 
-         			end
+            end
         end
         
         function prediction = predict_one(m, this_test_example)
             
-         			node = mytree.descend_tree(m.tree, this_test_example);
+            node = mytree.descend_tree(m.tree, this_test_example);
             prediction = node.prediction;
             
-      		end
+        end
         
         function node = descend_tree(node, this_test_example)
             
-         			if isempty(node.children)
+            if isempty(node.children)
                 return;
             else
                 if this_test_example(node.splitFeature) < node.splitValue
@@ -166,12 +171,12 @@ classdef mytree
                 end
             end
             
-      		end
+        end
         
         % describe a tree:
         function describeNode(node)
             
-         			if isempty(node.children)
+            if isempty(node.children)
                 fprintf('Node %d; %s\n', node.number, node.prediction);
             else
                 fprintf('Node %d; if %s <= %f then node %d else node %d\n', node.number, node.splitFeatureName, node.splitValue, node.children{1}.number, node.children{2}.number);
@@ -179,7 +184,7 @@ classdef mytree
                 mytree.describeNode(node.children{2});
             end
             
-      		end
-      		
+        end
+        
     end
 end

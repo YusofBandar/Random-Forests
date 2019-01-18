@@ -52,11 +52,11 @@ classdef mytree
             
             node.impurityMeasure = mytree.weightedImpurity(m, node.labels);
             
-            selected_examples = mytree.feature_selection(m.num_features_to_sample,node.examples)
+            selected_examples = mytree.feature_selection(m.num_features_to_sample,node.examples);
             
             for a=1:size(selected_examples,2)
                 i = selected_examples(1,a);
-                fprintf('evaluating possible splits on feature %d/%d\n', i, size(node.examples,2));
+               
                 
                 [ps,n] = sortrows(node.examples,i);
                 
@@ -143,8 +143,6 @@ classdef mytree
             predictions = categorical;
             
             for i=1:size(test_examples,1)
-                
-                fprintf('classifying example %i/%i\n', i, size(test_examples,1));
                 this_test_example = test_examples{i,:};
                 this_prediction = mytree.predict_one(m, this_test_example);
                 predictions(end+1) = this_prediction;

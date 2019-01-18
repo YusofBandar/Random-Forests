@@ -36,12 +36,6 @@ classdef myrandomforest
             end
             
         end
-
-        function prediction = model_prediction(predictions)
-            [unique_predictions, ~,indicies] = unique(predictions);
-            v = mode(indicies);
-            prediction = unique_predictions(v);
-        end
         
         function predictions = predict(m, test_examples)
             
@@ -49,15 +43,29 @@ classdef myrandomforest
             
             for i=1:size(test_examples,1)
                 
-                fprintf('classifying example %i/%i\n', i, size(test_examples,1));
+               
                 this_test_example = test_examples{i,:};
                 
-                tree = m.trees{1,1}
                 
-                this_prediction = mytree.predict_one(tree, this_test_example);
-                predictions(end+1) = this_prediction;
+                tree_predictions = categorical;
+                for k=1:size(m.trees,2)
+                    tree = m.trees{1,k};
+                    this_prediction = mytree.predict_one(tree, this_test_example);
+                    tree_predictions(end+1) = this_prediction;
+                    
+                end
+                
+               predictions(end+1) = myrandomforest.model_prediction(tree_predictions);
+                
+               
                 
             end
+        end
+        
+        function prediction = model_prediction(predictions)
+            [unique_predictions, ~,indicies] = unique(predictions);
+            v = mode(indicies);
+            prediction = unique_predictions(v);
         end
         
          function prediction = predict_one(m, this_test_example)
@@ -70,7 +78,7 @@ classdef myrandomforest
         % Create a singe bag of testing examples.
         % The size of the bag is determined by the in bag fraction.
         function [bag_examples,bag_labels] = bagging(m)
-            bag_size = 	int32(size(m.train_examples,1) * m.in_bag_fraction)
+            bag_size = 	int32(size(m.train_examples,1) * m.in_bag_fraction);
             
             bag_indices = randi(m.N,1,bag_size);
             

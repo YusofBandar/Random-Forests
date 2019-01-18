@@ -31,6 +31,7 @@ classdef myrandomforest
             for i=1:num_trees
                 [bag_examples,bag_labels] = myrandomforest.bagging(m);
                 tree = mytree.fit(bag_examples,bag_labels,num_features_to_sample);
+                tree.id = i;
                 m.trees{end + 1} = tree;
             end
             

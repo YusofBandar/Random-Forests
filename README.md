@@ -1,2 +1,2 @@
 # Random-Forests
-Matlab Implementation Random-Forests
+Random-Forest Implemented in Matlab
